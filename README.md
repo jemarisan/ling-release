@@ -51,8 +51,8 @@ Ling gives you **unlimited rehearsals in a virtual world, so you get it right th
 
 Your data never leaves your device. Ling has zero backend servers -- the only network requests are direct API calls to AI model providers (e.g. DeepSeek, Gemini, Claude), and even those only send the minimum context needed for the current conversation.
 
-- [Privacy Policy](https://jemarisan.github.io/ling-release/privacy)
-- [Terms of Use](https://jemarisan.github.io/ling-release/terms)
+- [Privacy Policy](https://ling.deepout.ai/privacy)
+- [Terms of Use](https://ling.deepout.ai/terms)
 
 ## About
 
