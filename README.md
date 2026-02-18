@@ -31,7 +31,7 @@ Ling gives you **unlimited rehearsals in a virtual world, so you get it right th
 - **LingCard (Script)** -- A rehearsal scenario. Practice until you're confident.
 - **AI Friends** -- WeChat-style social interface. Your AI friends remember everything.
 - **Behavior Analysis** -- Deep insights into your communication patterns.
-- **100% Local-First** -- All data stays on your device. We have zero servers.
+- **100% Local-First** -- Chat history stays on your device. AI replies are generated directly by third-party models; we never touch your data.
 
 ## Android Installation
 
@@ -49,7 +49,7 @@ Ling gives you **unlimited rehearsals in a virtual world, so you get it right th
 
 ## Privacy
 
-Your data never leaves your device. Ling has zero backend servers -- the only network requests are direct API calls to AI model providers (e.g. DeepSeek, Gemini, Claude), and even those only send the minimum context needed for the current conversation.
+All chat history is stored 100% locally on your device. Ling has zero backend servers. When using AI features, message text is sent directly to the AI model provider you choose (e.g. DeepSeek, Kimi, Gemini, Claude) -- we never intercept, store, or relay your data. Only the minimum context needed for the current conversation is transmitted.
 
 - [Privacy Policy](https://ling.deepout.ai/privacy)
 - [Terms of Use](https://ling.deepout.ai/terms)

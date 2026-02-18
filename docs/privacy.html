@@ -12,37 +12,197 @@
     h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
     .update { font-size: 13px; color: var(--text3); margin-bottom: 32px; }
     h2 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; }
+    h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: var(--text); }
     p, li { font-size: 15px; color: var(--text2); line-height: 1.8; margin-bottom: 12px; }
     ul { padding-left: 20px; }
     a { color: var(--primary); text-decoration: none; }
     a:hover { text-decoration: underline; }
     .back { display: inline-block; margin-bottom: 24px; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; }
+    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #2A2A2A; font-size: 14px; color: var(--text2); }
+    th { color: var(--text); font-weight: 600; }
     footer { text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid #2A2A2A; font-size: 12px; color: var(--text3); }
+    .lang-switch { margin-bottom: 16px; }
+    .lang-switch a {
+      font-size: 13px; color: var(--text3); text-decoration: none;
+      padding: 4px 12px; border: 1px solid var(--text3); border-radius: 16px; cursor: pointer; transition: all 0.2s;
+    }
+    .lang-switch a:hover, .lang-switch a.active { color: var(--primary); border-color: var(--primary); }
+    [lang-content] { display: none; }
+    [lang-content].active { display: block; }
   </style>
 </head>
 <body>
   <div class="container">
     <a class="back" href="./">&larr; Back</a>
-    <h1>Privacy Policy</h1>
-    <p class="update">Last updated: 2026-02-16</p>
+    <div class="lang-switch">
+      <a id="btn-zh" class="active" onclick="switchLang('zh')">中文</a>
+      <a id="btn-en" onclick="switchLang('en')">EN</a>
+    </div>
 
-    <h2>How We Treat Your Data</h2>
-    <p>Ling is designed with a <strong>100% local-first</strong> architecture. All your data -- conversations, memories, character descriptions, rehearsal records -- is stored <strong>entirely on your device</strong>. It is never uploaded to any server of ours (we don't have backend servers).</p>
+    <!-- ========== Chinese ========== -->
+    <div lang-content="zh" class="active">
+      <h1>隐私政策</h1>
+      <p class="update">最后更新：2026-02-19</p>
 
-    <ul>
-      <li><strong>Data Storage</strong>: All user data is saved in a local database on your device, protected by system biometric authentication (Face ID / fingerprint) when enabled.</li>
-      <li><strong>AI Calls</strong>: Conversations with AI are sent directly to the provider you choose (e.g. DeepSeek, Gemini, Claude). We do not intercept, store, or view any conversation content. When using the built-in API key, calls go directly to the provider; we only apply usage limits.</li>
-      <li><strong>Data Sharing</strong>: LingCard sharing, export, and other features operate entirely locally. You choose what to share; we never automatically upload or sync to any third party.</li>
-      <li><strong>Third Parties</strong>: We do not sell, rent, or trade your personal data to any third party.</li>
-    </ul>
+      <h2>我们如何对待你的数据</h2>
+      <p>百灵（Ling）采用 <strong>100% 本地优先</strong> 设计。你的对话记录、记忆、角色描述、排练记录等所有用户数据均存储在<strong>你的设备本地</strong>，不会上传到我们的任何服务器（我们也没有后端服务器）。</p>
+      <ul>
+        <li><strong>数据存储</strong>：所有用户数据保存在你设备上的本地数据库中，并可通过系统生物识别（如 Face ID/指纹）保护。</li>
+        <li><strong>数据分享</strong>：灵卡分享、导出等功能均在本地完成；分享内容由你主动选择，我们不会自动上传或同步到任何第三方。</li>
+        <li><strong>第三方</strong>：我们不会向第三方出售、出租或交易你的个人数据。</li>
+      </ul>
 
-    <h2>Data Never Leaves Your Device</h2>
-    <p>This app has no account system and no cloud sync. Your data never leaves your phone unless you actively export or share it.</p>
+      <h2>AI 服务与数据传输</h2>
+      <p>为提供 AI 对话功能，你发送的消息内容会通过网络<strong>直接</strong>传输至第三方 AI 服务商进行处理。<strong>我们不经手、不存储、不查看这些对话内容。</strong></p>
 
-    <h2>Contact & Updates</h2>
-    <p>If you have questions about our privacy practices, or if we need to update this policy, we will publish updates via the "About" section in the app or the app store page. Continued use of the app indicates acceptance of the current privacy policy.</p>
+      <h3>发送的数据内容</h3>
+      <ul>
+        <li>当次对话所需的最少上下文（最近若干条消息文本）</li>
+        <li>不会发送你的完整历史记录</li>
+        <li>排练分析发给 AI 的是结构化摘要，不是对话原文</li>
+      </ul>
+
+      <h3>数据接收方</h3>
+      <p>根据你的配置，消息可能被发送到以下任一服务商：</p>
+      <table>
+        <tr><th>服务商</th><th>说明</th></tr>
+        <tr><td>DeepSeek</td><td>默认主力模型（如用户未自行配置其他服务商）</td></tr>
+        <tr><td>Kimi (Moonshot)</td><td>国内备选</td></tr>
+        <tr><td>GLM (Zhipu AI)</td><td>国内备选</td></tr>
+        <tr><td>Qwen (Tongyi Qianwen)</td><td>国内备选</td></tr>
+        <tr><td>Doubao (ByteDance)</td><td>国内备选</td></tr>
+        <tr><td>Spark (iFlytek)</td><td>国内备选</td></tr>
+        <tr><td>Baichuan</td><td>国内备选</td></tr>
+        <tr><td>Google Gemini</td><td>国际，用户自行配置 Key 后可用</td></tr>
+        <tr><td>Anthropic Claude</td><td>国际，用户自行配置 Key 后可用</td></tr>
+        <tr><td>Groq</td><td>国际，用户自行配置 Key 后可用</td></tr>
+        <tr><td>用户自定义兼容 API</td><td>用户自行填写 Endpoint、Key 和模型名</td></tr>
+      </table>
+      <ul>
+        <li>若使用应用内置 API Key，调用直连服务商，我们仅做必要的用量管控。</li>
+        <li>若使用用户自行配置的 Key，调用 100% 直连服务商，零中间层。</li>
+        <li>你可以随时在「我的 > 设置 > API Key 设置」查看和更换当前使用的服务商。</li>
+      </ul>
+
+      <h3>数据用途</h3>
+      <ul>
+        <li>仅用于生成 AI 回复，不作他用</li>
+        <li>各第三方服务商对数据的处理受其各自隐私政策约束</li>
+      </ul>
+
+      <h3>用户授权</h3>
+      <ul>
+        <li>首次使用 AI 对话功能时，应用会弹出数据使用说明弹窗，明确告知数据发送对象、内容和用途</li>
+        <li>用户需明确同意后才能使用 AI 功能</li>
+        <li>不同意则无法使用 AI 对话，但不影响本地数据查看</li>
+      </ul>
+
+      <h2>数据收集声明</h2>
+      <p>本应用不设账号登录与云同步。我们不收集、不上传、不存储你的任何个人数据到我们的服务器（我们没有服务器）。你的数据从未离开你的手机，除非你主动导出/分享，或使用 AI 对话功能时消息文本被直连发送至第三方 AI 服务商。</p>
+
+      <h2>API Key 安全</h2>
+      <ul>
+        <li>API Key 存储在操作系统级安全存储中（iOS Keychain / Android KeyStore / macOS Keychain）</li>
+        <li>不存入本地数据库</li>
+        <li>不通过网络传输给我们的任何服务</li>
+      </ul>
+
+      <h2>联系与更新</h2>
+      <p>若你对隐私处理有疑问，或我们需要更新本政策，会通过应用内「关于」或应用商店页面发布更新说明。继续使用应用即表示你接受当时的隐私政策版本。</p>
+    </div>
+
+    <!-- ========== English ========== -->
+    <div lang-content="en">
+      <h1>Privacy Policy</h1>
+      <p class="update">Last updated: 2026-02-19</p>
+
+      <h2>How We Treat Your Data</h2>
+      <p>Ling is designed with a <strong>100% local-first</strong> architecture. All your data -- conversations, memories, character descriptions, rehearsal records -- is stored <strong>entirely on your device</strong>. It is never uploaded to any server of ours (we don't have backend servers).</p>
+      <ul>
+        <li><strong>Data Storage</strong>: All user data is saved in a local database on your device, protected by system biometric authentication (Face ID / fingerprint) when enabled.</li>
+        <li><strong>Data Sharing</strong>: LingCard sharing, export, and other features operate entirely locally. You choose what to share; we never automatically upload or sync to any third party.</li>
+        <li><strong>Third Parties</strong>: We do not sell, rent, or trade your personal data to any third party.</li>
+      </ul>
+
+      <h2>AI Services &amp; Data Transmission</h2>
+      <p>To provide AI conversation functionality, your message content is transmitted over the network <strong>directly</strong> to third-party AI service providers for processing. <strong>We do not intercept, store, or view any conversation content.</strong></p>
+
+      <h3>What Data Is Sent</h3>
+      <ul>
+        <li>Minimum context needed for the current conversation (recent messages)</li>
+        <li>Your full conversation history is never sent</li>
+        <li>Rehearsal analysis sends structured summaries to AI, not raw conversation text</li>
+      </ul>
+
+      <h3>Who Receives the Data</h3>
+      <p>Depending on your configuration, messages may be sent to any of the following providers:</p>
+      <table>
+        <tr><th>Provider</th><th>Notes</th></tr>
+        <tr><td>DeepSeek</td><td>Default model (if no other provider configured)</td></tr>
+        <tr><td>Kimi (Moonshot)</td><td>Domestic (CN) alternative</td></tr>
+        <tr><td>GLM (Zhipu AI)</td><td>Domestic (CN) alternative</td></tr>
+        <tr><td>Qwen (Tongyi Qianwen)</td><td>Domestic (CN) alternative</td></tr>
+        <tr><td>Doubao (ByteDance)</td><td>Domestic (CN) alternative</td></tr>
+        <tr><td>Spark (iFlytek)</td><td>Domestic (CN) alternative</td></tr>
+        <tr><td>Baichuan</td><td>Domestic (CN) alternative</td></tr>
+        <tr><td>Google Gemini</td><td>International, user-configured key required</td></tr>
+        <tr><td>Anthropic Claude</td><td>International, user-configured key required</td></tr>
+        <tr><td>Groq</td><td>International, user-configured key required</td></tr>
+        <tr><td>Custom Compatible API</td><td>User provides endpoint, key, and model name</td></tr>
+      </table>
+      <ul>
+        <li>When using the built-in API key, calls go directly to the provider; we only apply usage limits.</li>
+        <li>When using a user-configured key, calls are 100% direct with zero intermediary.</li>
+        <li>You can view and change your active provider at any time in Me &gt; Settings &gt; API Key Settings.</li>
+      </ul>
+
+      <h3>Purpose of Data Transmission</h3>
+      <ul>
+        <li>Solely to generate AI replies; no other use</li>
+        <li>Each third-party provider's handling of data is governed by their own privacy policy</li>
+      </ul>
+
+      <h3>User Consent</h3>
+      <ul>
+        <li>Before using AI conversation features for the first time, the app displays a data usage notice clearly stating what data is sent, to whom, and for what purpose</li>
+        <li>You must explicitly agree before AI features can be used</li>
+        <li>Declining does not affect access to local data</li>
+      </ul>
+
+      <h2>Data Collection Statement</h2>
+      <p>This app has no account system and no cloud sync. We do not collect, upload, or store any personal data on our servers (we have no servers). Your data never leaves your phone unless you actively export/share it, or when message text is sent directly to a third-party AI provider during AI conversations.</p>
+
+      <h2>API Key Security</h2>
+      <ul>
+        <li>API keys are stored in OS-level secure storage (iOS Keychain / Android KeyStore / macOS Keychain)</li>
+        <li>Keys are never stored in the local database</li>
+        <li>Keys are never transmitted to any of our services</li>
+      </ul>
+
+      <h2>Contact &amp; Updates</h2>
+      <p>If you have questions about our privacy practices, or if we need to update this policy, we will publish updates via the "About" section in the app or the app store page. Continued use of the app indicates acceptance of the current privacy policy.</p>
+    </div>
 
     <footer>(c) 2026 JEMARISAN. All rights reserved.</footer>
   </div>
+
+  <script>
+    function switchLang(lang) {
+      document.querySelectorAll('[lang-content]').forEach(function(el) {
+        el.classList.toggle('active', el.getAttribute('lang-content') === lang);
+      });
+      document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      try { localStorage.setItem('ling-lang', lang); } catch(e) {}
+    }
+    (function() {
+      var saved = null;
+      try { saved = localStorage.getItem('ling-lang'); } catch(e) {}
+      if (saved) { switchLang(saved); return; }
+      var browserLang = (navigator.language || '').toLowerCase();
+      switchLang(browserLang.startsWith('zh') ? 'zh' : 'en');
+    })();
+  </script>
 </body>
 </html>
