@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ling - AI Life Rehearsal</title>
+  <style>
+    :root {
+      --primary: #7C6AFF;
+      --bg: #111111;
+      --surface: #1A1A1A;
+      --text: #E8E8E8;
+      --text2: #999999;
+      --text3: #666666;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .container { max-width: 680px; margin: 0 auto; padding: 60px 24px; }
+    .hero { text-align: center; margin-bottom: 48px; }
+    .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 8px; }
+    .hero h1 span { color: var(--primary); }
+    .hero p { font-size: 18px; color: var(--text2); line-height: 1.6; }
+    .tagline {
+      text-align: center;
+      font-size: 15px;
+      color: var(--text3);
+      margin-bottom: 48px;
+      letter-spacing: 2px;
+    }
+    .downloads {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+    .dl-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--surface);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.2s;
+    }
+    .dl-btn:hover { background: #242424; }
+    .dl-btn .platform { font-size: 16px; font-weight: 500; }
+    .dl-btn .badge {
+      font-size: 13px;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .features { margin-bottom: 48px; }
+    .features h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      padding: 16px;
+      background: var(--surface);
+      border-radius: 10px;
+    }
+    .feature-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .feature-card p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+    .privacy-banner {
+      text-align: center;
+      padding: 20px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 48px;
+    }
+    .privacy-banner p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+    .privacy-banner strong { color: var(--text); }
+    footer {
+      text-align: center;
+      padding: 24px 0;
+      border-top: 1px solid #2A2A2A;
+    }
+    footer a { color: var(--text3); text-decoration: none; font-size: 13px; margin: 0 12px; }
+    footer a:hover { color: var(--text2); }
+    footer .copy { color: var(--text3); font-size: 12px; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1><span>Ling</span></h1>
+      <p>AI-Powered Life Rehearsal</p>
+    </div>
+    <div class="tagline">百灵懂你，灵卡相见</div>
+
+    <div class="downloads">
+      <a class="dl-btn" href="https://apps.apple.com/app/id6759032853">
+        <span class="platform">iOS / iPadOS</span>
+        <span class="badge">App Store</span>
+      </a>
+      <a class="dl-btn" href="https://github.com/jemarisan/ling-release/releases/latest">
+        <span class="platform">Android</span>
+        <span class="badge">APK Download</span>
+      </a>
+      <a class="dl-btn" href="https://github.com/jemarisan/ling-release/releases/latest">
+        <span class="platform">macOS</span>
+        <span class="badge">DMG Download</span>
+      </a>
+    </div>
+
+    <div class="features">
+      <h2>Core Features</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>LingCard</h3>
+          <p>Describe real people. AI becomes them -- personality, speaking style, and all.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Rehearsal</h3>
+          <p>Practice tough conversations. Resign, negotiate, confess -- rehearse until ready.</p>
+        </div>
+        <div class="feature-card">
+          <h3>AI Friends</h3>
+          <p>WeChat-style social. Your AI friends remember everything and grow with you.</p>
+        </div>
+        <div class="feature-card">
+          <h3>100% Local</h3>
+          <p>All data stays on your device. Zero servers. Your data never leaves your phone.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="privacy-banner">
+      <p><strong>Your data never leaves your device.</strong><br>
+      We don't have servers. We can't see your data. Not because we promise not to -- because we literally can't.</p>
+    </div>
+
+    <footer>
+      <div>
+        <a href="privacy">Privacy Policy</a>
+        <a href="terms">Terms of Use</a>
+        <a href="mailto:jemarisan@gmail.com">Contact</a>
+      </div>
+      <p class="copy">(c) 2026 JEMARISAN. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>
