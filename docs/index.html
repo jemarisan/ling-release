@@ -7,153 +7,166 @@
   <style>
     :root {
       --primary: #7C6AFF;
-      --bg: #111111;
-      --surface: #1A1A1A;
+      --primary-dim: rgba(124,106,255,0.15);
+      --bg: #0A0A0A;
+      --surface: #151515;
+      --surface2: #1C1C1C;
       --text: #E8E8E8;
       --text2: #999999;
-      --text3: #666666;
+      --text3: #555555;
+      --border: #2A2A2A;
+      --radius: 14px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
-    .container { max-width: 680px; margin: 0 auto; padding: 60px 24px; }
-    .hero { text-align: center; margin-bottom: 48px; }
-    .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 8px; }
-    .hero h1 span { color: var(--primary); }
-    .hero p { font-size: 18px; color: var(--text2); line-height: 1.6; }
-    .tagline {
-      text-align: center;
-      font-size: 15px;
-      color: var(--text3);
-      margin-bottom: 48px;
-      letter-spacing: 2px;
+
+    /* -- Layout -- */
+    .container { max-width: 720px; margin: 0 auto; padding: 48px 24px 32px; }
+
+    /* -- Top bar -- */
+    .top-bar { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 48px; }
+    .lang-btn {
+      font-size: 13px; color: var(--text3); background: none; border: 1px solid var(--border);
+      padding: 5px 14px; border-radius: 20px; cursor: pointer; transition: all 0.2s; text-decoration: none;
     }
-    .lang-switch {
-      text-align: center;
-      margin-bottom: 32px;
+    .lang-btn:hover, .lang-btn.active { color: var(--primary); border-color: var(--primary); }
+    .gh-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--text3); text-decoration: none; padding: 5px 14px;
+      border: 1px solid var(--border); border-radius: 20px; transition: all 0.2s;
     }
-    .lang-switch a {
-      font-size: 13px;
-      color: var(--text3);
-      text-decoration: none;
-      padding: 4px 12px;
-      border: 1px solid var(--text3);
-      border-radius: 16px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .lang-switch a:hover, .lang-switch a.active {
-      color: var(--primary);
-      border-color: var(--primary);
-    }
-    .downloads {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 48px;
-    }
+    .gh-link:hover { color: var(--text2); border-color: var(--text2); }
+    .gh-link svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* -- Hero -- */
+    .hero { text-align: center; margin-bottom: 56px; }
+    .hero h1 { font-size: 56px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--primary), #A78BFA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero .subtitle { font-size: 20px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+    .hero .tagline { font-size: 14px; color: var(--text3); letter-spacing: 3px; margin-top: 16px; }
+
+    /* -- Downloads -- */
+    .downloads { display: flex; flex-direction: column; gap: 10px; margin-bottom: 56px; }
     .dl-btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px;
-      background: var(--surface);
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--text);
-      transition: background 0.2s;
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); text-decoration: none; color: var(--text); transition: all 0.2s;
     }
-    .dl-btn:hover { background: #242424; }
-    .dl-btn .platform { font-size: 16px; font-weight: 500; }
+    .dl-btn:hover { background: var(--surface2); border-color: var(--text3); }
+    .dl-btn .icon { width: 28px; height: 28px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .dl-btn .icon svg { width: 24px; height: 24px; fill: var(--text2); }
+    .dl-btn .info { flex: 1; }
+    .dl-btn .platform { font-size: 16px; font-weight: 600; }
+    .dl-btn .note { font-size: 12px; color: var(--text3); margin-top: 2px; }
     .dl-btn .badge {
-      font-size: 13px;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-      padding: 4px 12px;
-      border-radius: 20px;
+      font-size: 12px; font-weight: 500; color: var(--primary);
+      border: 1px solid var(--primary); padding: 4px 14px; border-radius: 20px; white-space: nowrap;
     }
-    .features { margin-bottom: 48px; }
-    .features h2 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: var(--text);
-    }
+
+    /* -- Features -- */
+    .features { margin-bottom: 56px; }
+    .features h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
     .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    @media (max-width: 480px) { .feature-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) { .feature-grid { grid-template-columns: 1fr; } }
     .feature-card {
-      padding: 16px;
-      background: var(--surface);
-      border-radius: 10px;
+      padding: 20px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); transition: border-color 0.2s;
     }
-    .feature-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-    .feature-card p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+    .feature-card:hover { border-color: var(--text3); }
+    .feature-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .feature-card p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+    /* -- Privacy banner -- */
     .privacy-banner {
-      text-align: center;
-      padding: 20px;
-      background: var(--surface);
-      border-radius: 12px;
-      margin-bottom: 48px;
+      text-align: center; padding: 24px; background: var(--primary-dim);
+      border: 1px solid rgba(124,106,255,0.25); border-radius: var(--radius); margin-bottom: 56px;
     }
-    .privacy-banner p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+    .privacy-banner p { font-size: 14px; color: var(--text2); line-height: 1.7; }
     .privacy-banner strong { color: var(--text); }
-    footer {
-      text-align: center;
-      padding: 24px 0;
-      border-top: 1px solid #2A2A2A;
-    }
-    footer a { color: var(--text3); text-decoration: none; font-size: 13px; margin: 0 12px; }
+
+    /* -- Footer -- */
+    footer { text-align: center; padding: 24px 0; border-top: 1px solid var(--border); }
+    footer .links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 12px; }
+    footer a { color: var(--text3); text-decoration: none; font-size: 13px; transition: color 0.2s; }
     footer a:hover { color: var(--text2); }
-    footer .copy { color: var(--text3); font-size: 12px; margin-top: 12px; }
-    [lang-content] { display: none; }
-    [lang-content].active { display: block; }
-    span[lang-content] { display: none; }
-    span[lang-content].active { display: inline; }
+    footer .copy { color: var(--text3); font-size: 12px; }
+
+    /* -- i18n -- */
+    [data-lang] { display: none; }
+    [data-lang].active { display: block; }
+    span[data-lang].active { display: inline; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="lang-switch">
-      <a id="btn-zh" class="active" onclick="switchLang('zh')">中文</a>
-      <a id="btn-en" onclick="switchLang('en')">EN</a>
+    <!-- Top bar: GitHub + Language -->
+    <div class="top-bar">
+      <a class="gh-link" href="https://github.com/jemarisan/ling-release" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+      <a class="lang-btn" id="btn-zh" onclick="switchLang('zh')">中文</a>
+      <a class="lang-btn" id="btn-en" onclick="switchLang('en')">EN</a>
     </div>
 
+    <!-- Hero -->
     <div class="hero">
       <h1><span>Ling</span></h1>
-      <p lang-content="zh" class="active">AI 驱动的人生排练场</p>
-      <p lang-content="en">AI-Powered Life Rehearsal</p>
+      <p class="subtitle" data-lang="zh" class="active">AI 驱动的人生排练场</p>
+      <p class="subtitle" data-lang="en">AI-Powered Life Rehearsal</p>
+      <div class="tagline">百灵懂你，灵卡相见</div>
     </div>
-    <div class="tagline">百灵懂你，灵卡相见</div>
 
+    <!-- Downloads -->
     <div class="downloads">
       <a class="dl-btn" href="https://apps.apple.com/app/id6759032853">
-        <span class="platform">iOS / iPadOS</span>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        </div>
+        <div class="info">
+          <div class="platform">iOS / iPadOS</div>
+          <div class="note">iOS 16.0+</div>
+        </div>
         <span class="badge">App Store</span>
       </a>
       <a class="dl-btn" href="https://github.com/jemarisan/ling-release/releases/latest">
-        <span class="platform">Android</span>
-        <span class="badge">APK Download</span>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24a11.463 11.463 0 00-8.94 0L5.65 5.67c-.19-.29-.58-.38-.87-.2-.28.18-.37.54-.22.83L6.4 9.48A10.78 10.78 0 002 18h20a10.78 10.78 0 00-4.4-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>
+        </div>
+        <div class="info">
+          <div class="platform">Android</div>
+          <div class="note">Android 5.0+</div>
+        </div>
+        <span class="badge">APK</span>
       </a>
       <a class="dl-btn" href="https://github.com/jemarisan/ling-release/releases/latest">
-        <span class="platform">macOS</span>
-        <span class="badge">DMG Download</span>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        </div>
+        <div class="info">
+          <div class="platform">macOS</div>
+          <div class="note">macOS 13.0+</div>
+        </div>
+        <span class="badge">DMG</span>
       </a>
     </div>
 
-    <!-- zh features -->
-    <div class="features" lang-content="zh" class="active">
+    <!-- Features (zh) -->
+    <div class="features" data-lang="zh">
       <h2>核心功能</h2>
       <div class="feature-grid">
         <div class="feature-card">
-          <h3>灵卡</h3>
+          <h3>灵卡 -- 人相卡</h3>
           <p>描述真实的人。AI 化身为他们 -- 性格、说话风格，一比一还原。</p>
         </div>
         <div class="feature-card">
-          <h3>排练</h3>
+          <h3>灵卡 -- 对白卡</h3>
           <p>练习高风险对话。辞职、谈判、表白 -- 反复排练直到准备好。</p>
         </div>
         <div class="feature-card">
@@ -167,16 +180,16 @@
       </div>
     </div>
 
-    <!-- en features -->
-    <div class="features" lang-content="en">
+    <!-- Features (en) -->
+    <div class="features" data-lang="en">
       <h2>Core Features</h2>
       <div class="feature-grid">
         <div class="feature-card">
-          <h3>LingCard</h3>
+          <h3>Persona LingCard</h3>
           <p>Describe real people. AI becomes them -- personality, speaking style, and all.</p>
         </div>
         <div class="feature-card">
-          <h3>Rehearsal</h3>
+          <h3>Script LingCard</h3>
           <p>Practice tough conversations. Resign, negotiate, confess -- rehearse until ready.</p>
         </div>
         <div class="feature-card">
@@ -190,30 +203,33 @@
       </div>
     </div>
 
+    <!-- Privacy banner -->
     <div class="privacy-banner">
-      <p lang-content="zh" class="active">
+      <p data-lang="zh">
         <strong>对话记录 100% 本地存储。</strong><br>
         AI 回复由你选择的第三方模型直连生成。我们没有后端服务器，不经手、不存储、不查看你的任何数据。
       </p>
-      <p lang-content="en">
+      <p data-lang="en">
         <strong>Chat history is 100% stored on your device.</strong><br>
         AI replies are generated directly by the third-party model you choose. We have no backend servers -- we never intercept, store, or view your data.
       </p>
     </div>
 
+    <!-- Footer -->
     <footer>
-      <div>
-        <a href="privacy">
-          <span lang-content="zh" class="active">隐私政策</span>
-          <span lang-content="en">Privacy Policy</span>
+      <div class="links">
+        <a href="privacy.html">
+          <span data-lang="zh">隐私政策</span>
+          <span data-lang="en">Privacy Policy</span>
         </a>
-        <a href="terms">
-          <span lang-content="zh" class="active">使用条款</span>
-          <span lang-content="en">Terms of Use</span>
+        <a href="terms.html">
+          <span data-lang="zh">使用条款</span>
+          <span data-lang="en">Terms of Use</span>
         </a>
+        <a href="https://github.com/jemarisan/ling-release" target="_blank" rel="noopener">GitHub</a>
         <a href="mailto:jemarisan@gmail.com">
-          <span lang-content="zh" class="active">联系我们</span>
-          <span lang-content="en">Contact</span>
+          <span data-lang="zh">联系我们</span>
+          <span data-lang="en">Contact</span>
         </a>
       </div>
       <p class="copy">(c) 2026 JEMARISAN. All rights reserved.</p>
@@ -222,14 +238,13 @@
 
   <script>
     function switchLang(lang) {
-      document.querySelectorAll('[lang-content]').forEach(function(el) {
-        el.classList.toggle('active', el.getAttribute('lang-content') === lang);
+      document.querySelectorAll('[data-lang]').forEach(function(el) {
+        el.classList.toggle('active', el.getAttribute('data-lang') === lang);
       });
       document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
       document.getElementById('btn-en').classList.toggle('active', lang === 'en');
       try { localStorage.setItem('ling-lang', lang); } catch(e) {}
     }
-    // Auto-detect language
     (function() {
       var saved = null;
       try { saved = localStorage.getItem('ling-lang'); } catch(e) {}

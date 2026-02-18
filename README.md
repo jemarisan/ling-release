@@ -49,10 +49,10 @@ Ling gives you **unlimited rehearsals in a virtual world, so you get it right th
 
 ## Privacy
 
-All chat history is stored 100% locally on your device. Ling has zero backend servers. When using AI features, message text is sent directly to the AI model provider you choose (e.g. DeepSeek, Kimi, Gemini, Claude) -- we never intercept, store, or relay your data. Only the minimum context needed for the current conversation is transmitted.
+All chat history is stored 100% locally on your device. Ling has zero backend servers. When using AI features, message text is sent directly to the AI model provider (e.g. DeepSeek, Kimi, and other domestic providers available by default; international providers like Gemini and Claude are only activated when you configure your own API key). We never intercept, store, or relay your data. Only the minimum context needed for the current conversation is transmitted.
 
-- [Privacy Policy](https://ling.deepout.ai/privacy)
-- [Terms of Use](https://ling.deepout.ai/terms)
+- [Privacy Policy](https://ling.deepout.ai/privacy.html)
+- [Terms of Use](https://ling.deepout.ai/terms.html)
 
 ## About
 

@@ -5,43 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy - Ling</title>
   <style>
-    :root { --bg: #111111; --surface: #1A1A1A; --text: #E8E8E8; --text2: #999999; --text3: #666666; --primary: #7C6AFF; }
+    :root { --bg: #0A0A0A; --surface: #151515; --text: #E8E8E8; --text2: #999999; --text3: #555555; --primary: #7C6AFF; --border: #2A2A2A; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; background: var(--bg); color: var(--text); }
-    .container { max-width: 680px; margin: 0 auto; padding: 48px 24px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+    .container { max-width: 720px; margin: 0 auto; padding: 48px 24px; }
+    .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .back { font-size: 14px; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+    .back:hover { color: var(--text2); }
+    .lang-group { display: flex; gap: 8px; }
+    .lang-btn {
+      font-size: 13px; color: var(--text3); background: none; border: 1px solid var(--border);
+      padding: 5px 14px; border-radius: 20px; cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .lang-btn:hover, .lang-btn.active { color: var(--primary); border-color: var(--primary); }
     h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
     .update { font-size: 13px; color: var(--text3); margin-bottom: 32px; }
-    h2 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; }
-    h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: var(--text); }
+    h2 { font-size: 18px; font-weight: 600; margin: 32px 0 12px; }
+    h3 { font-size: 16px; font-weight: 600; margin: 24px 0 8px; color: var(--text); }
+    h4 { font-size: 14px; font-weight: 600; margin: 20px 0 8px; color: var(--text2); }
     p, li { font-size: 15px; color: var(--text2); line-height: 1.8; margin-bottom: 12px; }
     ul { padding-left: 20px; }
     a { color: var(--primary); text-decoration: none; }
     a:hover { text-decoration: underline; }
-    .back { display: inline-block; margin-bottom: 24px; font-size: 14px; }
     table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; }
-    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #2A2A2A; font-size: 14px; color: var(--text2); }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text2); }
     th { color: var(--text); font-weight: 600; }
-    footer { text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid #2A2A2A; font-size: 12px; color: var(--text3); }
-    .lang-switch { margin-bottom: 16px; }
-    .lang-switch a {
-      font-size: 13px; color: var(--text3); text-decoration: none;
-      padding: 4px 12px; border: 1px solid var(--text3); border-radius: 16px; cursor: pointer; transition: all 0.2s;
-    }
-    .lang-switch a:hover, .lang-switch a.active { color: var(--primary); border-color: var(--primary); }
-    [lang-content] { display: none; }
-    [lang-content].active { display: block; }
+    footer { text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text3); }
+    [data-lang] { display: none; }
+    [data-lang].active { display: block; }
   </style>
 </head>
 <body>
   <div class="container">
-    <a class="back" href="./">&larr; Back</a>
-    <div class="lang-switch">
-      <a id="btn-zh" class="active" onclick="switchLang('zh')">中文</a>
-      <a id="btn-en" onclick="switchLang('en')">EN</a>
+    <div class="top-nav">
+      <a class="back" href="./">&larr; Back</a>
+      <div class="lang-group">
+        <a class="lang-btn" id="btn-zh" onclick="switchLang('zh')">中文</a>
+        <a class="lang-btn" id="btn-en" onclick="switchLang('en')">EN</a>
+      </div>
     </div>
 
     <!-- ========== Chinese ========== -->
-    <div lang-content="zh" class="active">
+    <div data-lang="zh">
       <h1>隐私政策</h1>
       <p class="update">最后更新：2026-02-19</p>
 
@@ -65,20 +70,28 @@
 
       <h3>数据接收方</h3>
       <p>根据你的配置，消息可能被发送到以下任一服务商：</p>
+
+      <h4>默认可用（应用内置 Key 或用户自行配置）</h4>
       <table>
         <tr><th>服务商</th><th>说明</th></tr>
-        <tr><td>DeepSeek</td><td>默认主力模型（如用户未自行配置其他服务商）</td></tr>
+        <tr><td>DeepSeek</td><td>默认主力模型</td></tr>
         <tr><td>Kimi (Moonshot)</td><td>国内备选</td></tr>
         <tr><td>GLM (Zhipu AI)</td><td>国内备选</td></tr>
         <tr><td>Qwen (Tongyi Qianwen)</td><td>国内备选</td></tr>
         <tr><td>Doubao (ByteDance)</td><td>国内备选</td></tr>
         <tr><td>Spark (iFlytek)</td><td>国内备选</td></tr>
         <tr><td>Baichuan</td><td>国内备选</td></tr>
-        <tr><td>Google Gemini</td><td>国际，用户自行配置 Key 后可用</td></tr>
-        <tr><td>Anthropic Claude</td><td>国际，用户自行配置 Key 后可用</td></tr>
-        <tr><td>Groq</td><td>国际，用户自行配置 Key 后可用</td></tr>
+      </table>
+
+      <h4>用户自行配置后可用（应用不内置、不预设以下服务，需用户主动填入自己的 API Key 才会启用）</h4>
+      <table>
+        <tr><th>服务商</th><th>说明</th></tr>
+        <tr><td>Google Gemini</td><td>用户自行配置 Key 后可用</td></tr>
+        <tr><td>Anthropic Claude</td><td>用户自行配置 Key 后可用</td></tr>
+        <tr><td>Groq</td><td>用户自行配置 Key 后可用</td></tr>
         <tr><td>用户自定义兼容 API</td><td>用户自行填写 Endpoint、Key 和模型名</td></tr>
       </table>
+
       <ul>
         <li>若使用应用内置 API Key，调用直连服务商，我们仅做必要的用量管控。</li>
         <li>若使用用户自行配置的 Key，调用 100% 直连服务商，零中间层。</li>
@@ -113,7 +126,7 @@
     </div>
 
     <!-- ========== English ========== -->
-    <div lang-content="en">
+    <div data-lang="en">
       <h1>Privacy Policy</h1>
       <p class="update">Last updated: 2026-02-19</p>
 
@@ -137,20 +150,28 @@
 
       <h3>Who Receives the Data</h3>
       <p>Depending on your configuration, messages may be sent to any of the following providers:</p>
+
+      <h4>Available by default (built-in key or user-configured)</h4>
       <table>
         <tr><th>Provider</th><th>Notes</th></tr>
-        <tr><td>DeepSeek</td><td>Default model (if no other provider configured)</td></tr>
+        <tr><td>DeepSeek</td><td>Default model</td></tr>
         <tr><td>Kimi (Moonshot)</td><td>Domestic (CN) alternative</td></tr>
         <tr><td>GLM (Zhipu AI)</td><td>Domestic (CN) alternative</td></tr>
         <tr><td>Qwen (Tongyi Qianwen)</td><td>Domestic (CN) alternative</td></tr>
         <tr><td>Doubao (ByteDance)</td><td>Domestic (CN) alternative</td></tr>
         <tr><td>Spark (iFlytek)</td><td>Domestic (CN) alternative</td></tr>
         <tr><td>Baichuan</td><td>Domestic (CN) alternative</td></tr>
-        <tr><td>Google Gemini</td><td>International, user-configured key required</td></tr>
-        <tr><td>Anthropic Claude</td><td>International, user-configured key required</td></tr>
-        <tr><td>Groq</td><td>International, user-configured key required</td></tr>
+      </table>
+
+      <h4>User-configured only (not built-in; only activated when user provides their own API key)</h4>
+      <table>
+        <tr><th>Provider</th><th>Notes</th></tr>
+        <tr><td>Google Gemini</td><td>User-configured key required</td></tr>
+        <tr><td>Anthropic Claude</td><td>User-configured key required</td></tr>
+        <tr><td>Groq</td><td>User-configured key required</td></tr>
         <tr><td>Custom Compatible API</td><td>User provides endpoint, key, and model name</td></tr>
       </table>
+
       <ul>
         <li>When using the built-in API key, calls go directly to the provider; we only apply usage limits.</li>
         <li>When using a user-configured key, calls are 100% direct with zero intermediary.</li>
@@ -189,8 +210,8 @@
 
   <script>
     function switchLang(lang) {
-      document.querySelectorAll('[lang-content]').forEach(function(el) {
-        el.classList.toggle('active', el.getAttribute('lang-content') === lang);
+      document.querySelectorAll('[data-lang]').forEach(function(el) {
+        el.classList.toggle('active', el.getAttribute('data-lang') === lang);
       });
       document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
       document.getElementById('btn-en').classList.toggle('active', lang === 'en');
