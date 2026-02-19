@@ -3,7 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Ling - AI Life Rehearsal</title>
+  <script>
+    (function(){
+      var v = '2026022002';
+      var k = 'ling_site_v';
+      try {
+        var old = sessionStorage.getItem(k);
+        if (old && old !== v) {
+          sessionStorage.setItem(k, v);
+          location.replace(location.pathname + '?_t=' + Date.now());
+          return;
+        }
+        sessionStorage.setItem(k, v);
+      } catch(e) {}
+      if (!/[?&]_t=/.test(location.search)) {
+        var ua = navigator.userAgent.toLowerCase();
+        if (/micromessenger|qq\/|weibo|dingtalk/.test(ua)) {
+          location.replace(location.pathname + '?_t=' + Date.now());
+        }
+      }
+    })();
+  </script>
   <style>
     :root {
       --primary: #7C6AFF;
@@ -264,7 +288,7 @@
           <span data-lang="en">Contact</span>
         </a>
       </div>
-      <p class="copy">(c) 2026 JEMARISAN. All rights reserved. <span style="margin-left:8px;opacity:0.5">site v2026.0220.1</span></p>
+      <p class="copy">(c) 2026 JEMARISAN. All rights reserved. <span style="margin-left:8px;opacity:0.5">site v2026.0220.2</span></p>
     </footer>
   </div>
 
