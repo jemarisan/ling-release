@@ -101,6 +101,37 @@
     [data-lang] { display: none; }
     [data-lang].active { display: block; }
     span[data-lang].active { display: inline; }
+
+    /* -- In-app browser overlay -- */
+    .browser-guide {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.88); flex-direction: column; align-items: flex-end;
+      padding: 24px 24px 0;
+    }
+    .browser-guide.active { display: flex; }
+    .browser-guide .arrow {
+      width: 60px; height: 60px; margin-right: 12px; margin-bottom: 16px;
+      animation: bounce 1.6s ease infinite;
+    }
+    .browser-guide .arrow svg { width: 100%; height: 100%; }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .browser-guide .guide-body {
+      width: 100%; text-align: center; margin-top: 40px;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+    .browser-guide .guide-title {
+      font-size: 20px; font-weight: 700; color: #fff; line-height: 1.5;
+    }
+    .browser-guide .guide-steps {
+      font-size: 15px; color: #ccc; line-height: 2;
+    }
+    .browser-guide .guide-steps strong { color: #fff; }
+    .browser-guide .guide-dismiss {
+      margin-top: 32px; font-size: 13px; color: #666;
+      background: none; border: 1px solid #444; border-radius: 20px;
+      padding: 8px 28px; cursor: pointer;
+    }
+    .browser-guide .guide-dismiss:active { background: #222; }
   </style>
 </head>
 <body>
@@ -237,6 +268,35 @@
     </footer>
   </div>
 
+  <!-- In-app browser guide overlay -->
+  <div class="browser-guide" id="browser-guide">
+    <div class="arrow">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30 52V12" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <path d="M16 24L30 10L44 24" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="30" cy="6" r="3" fill="white"/>
+      </svg>
+    </div>
+    <div class="guide-body">
+      <div class="guide-title" data-lang="zh">请在浏览器中打开</div>
+      <div class="guide-title" data-lang="en">Open in Browser</div>
+      <div class="guide-steps" data-lang="zh">
+        1. 点击右上角 <strong>...</strong> 菜单<br>
+        2. 选择 <strong>「在浏览器中打开」</strong><br>
+        3. 即可正常下载安装
+      </div>
+      <div class="guide-steps" data-lang="en">
+        1. Tap <strong>...</strong> in the top right<br>
+        2. Select <strong>"Open in Browser"</strong><br>
+        3. Then download normally
+      </div>
+      <button class="guide-dismiss" onclick="document.getElementById('browser-guide').classList.remove('active')">
+        <span data-lang="zh">我知道了</span>
+        <span data-lang="en">Got it</span>
+      </button>
+    </div>
+  </div>
+
   <script>
     function switchLang(lang) {
       document.querySelectorAll('[data-lang]').forEach(function(el) {
@@ -286,6 +346,14 @@
           fallback(document.getElementById('dl-android'));
           fallback(document.getElementById('dl-macos'));
         });
+    })();
+
+    (function() {
+      var ua = navigator.userAgent.toLowerCase();
+      var restricted = /micromessenger|qq\/|weibo|dingtalk|alipayclient|bytedancewebview|toutiao|douyin/.test(ua);
+      if (restricted) {
+        document.getElementById('browser-guide').classList.add('active');
+      }
     })();
   </script>
 </body>
