@@ -6,11 +6,11 @@ AI-powered life rehearsal -- build AI friends with LingCards, rehearse high-stak
 
 ## Download
 
-| Platform | Link | Requirement |
-|----------|------|-------------|
-| iOS / iPadOS | [App Store](https://apps.apple.com/app/id6759032853) | iOS 16.0+ |
-| Android | [APK Download](https://github.com/jemarisan/ling-release/releases/latest) | Android 5.0+ |
-| macOS | [DMG Download](https://github.com/jemarisan/ling-release/releases/latest) | macOS 13.0+ |
+| Platform | GitHub | Gitee (China) | Requirement |
+|----------|--------|---------------|-------------|
+| iOS / iPadOS | [App Store](https://apps.apple.com/app/id6759032853) | [App Store](https://apps.apple.com/app/id6759032853) | iOS 16.0+ |
+| Android | [APK Download](https://github.com/jemarisan/ling-release/releases/latest) | [APK Download](https://gitee.com/dislab_io/ling-release/releases/latest) | Android 5.0+ |
+| macOS | [DMG Download](https://github.com/jemarisan/ling-release/releases/latest) | [DMG Download](https://gitee.com/dislab_io/ling-release/releases/latest) | macOS 13.0+ |
 
 ## What is Ling?
 
@@ -35,14 +35,14 @@ Ling gives you **unlimited rehearsals in a virtual world, so you get it right th
 
 ## Android Installation
 
-1. Download the `.apk` file from [Releases](https://github.com/jemarisan/ling-release/releases/latest)
+1. Download the `.apk` file from [GitHub Releases](https://github.com/jemarisan/ling-release/releases/latest) or [Gitee Releases](https://gitee.com/dislab_io/ling-release/releases/latest)
 2. On your Android device, enable "Install from unknown sources" in Settings > Security
 3. Open the downloaded APK and install
 4. Once installed, the app checks for updates automatically
 
 ## macOS Installation
 
-1. Download the `.dmg` file from [Releases](https://github.com/jemarisan/ling-release/releases/latest)
+1. Download the `.dmg` file from [GitHub Releases](https://github.com/jemarisan/ling-release/releases/latest) or [Gitee Releases](https://gitee.com/dislab_io/ling-release/releases/latest)
 2. Open the DMG and drag the app to Applications
 3. On first launch, right-click the app and select "Open" (to bypass Gatekeeper)
 4. The app auto-updates via Sparkle when new versions are available
