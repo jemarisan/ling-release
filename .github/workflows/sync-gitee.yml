@@ -1,0 +1,114 @@
+name: Sync to Gitee
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+
+jobs:
+  # -------------------------------------------------------
+  # Job 1: Mirror repo to Gitee (code + Pages source)
+  # Triggered on every push to main.
+  # -------------------------------------------------------
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to Gitee
+        run: |
+          git remote add gitee https://oauth2:${{ secrets.GITEE_TOKEN }}@gitee.com/dislab_io/ling-release.git || true
+          git push gitee main --force
+          git push gitee --tags --force
+
+  # -------------------------------------------------------
+  # Job 2: Sync release assets to Gitee
+  # Triggered only when a GitHub Release is published.
+  # Downloads APK/DMG from GitHub Release, then creates
+  # the same release on Gitee and uploads the assets.
+  # -------------------------------------------------------
+  sync-release:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    needs: mirror
+    steps:
+      - name: Get release info
+        id: info
+        run: |
+          echo "tag=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+          echo "name=${{ github.event.release.name }}" >> "$GITHUB_OUTPUT"
+
+      - name: Download release assets from GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p assets
+          gh release download "${{ steps.info.outputs.tag }}" \
+            --repo "${{ github.repository }}" \
+            --dir assets \
+            --pattern '*.apk' --pattern '*.dmg' --pattern '*.xml' || true
+          ls -lh assets/
+
+      - name: Create Gitee release and upload assets
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          TAG: ${{ steps.info.outputs.tag }}
+          RELEASE_NAME: ${{ steps.info.outputs.name }}
+          RELEASE_BODY: ${{ github.event.release.body }}
+        run: |
+          OWNER="dislab_io"
+          REPO="ling-release"
+          API="https://gitee.com/api/v5"
+
+          # Create release on Gitee
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$API/repos/$OWNER/$REPO/releases" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg token "$GITEE_TOKEN" \
+              --arg tag "$TAG" \
+              --arg name "$RELEASE_NAME" \
+              --arg body "$RELEASE_BODY" \
+              '{
+                access_token: $token,
+                tag_name: $tag,
+                name: $name,
+                body: $body,
+                target_commitish: "main"
+              }')")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "Create release HTTP $HTTP_CODE"
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            RELEASE_ID=$(echo "$BODY" | jq -r '.id')
+            echo "Gitee release created: id=$RELEASE_ID"
+          else
+            # Release may already exist (re-run); try to find it
+            echo "Create failed ($HTTP_CODE), looking for existing release..."
+            RELEASE_ID=$(curl -s "$API/repos/$OWNER/$REPO/releases/tags/$TAG?access_token=$GITEE_TOKEN" \
+              | jq -r '.id // empty')
+            if [ -z "$RELEASE_ID" ]; then
+              echo "Could not find or create Gitee release. Skipping asset upload."
+              exit 0
+            fi
+            echo "Found existing release: id=$RELEASE_ID"
+          fi
+
+          # Upload each asset
+          for FILE in assets/*; do
+            [ -f "$FILE" ] || continue
+            FNAME=$(basename "$FILE")
+            echo "Uploading $FNAME ..."
+            curl -s -X POST \
+              "$API/repos/$OWNER/$REPO/releases/$RELEASE_ID/attach_files" \
+              -H "Content-Type: multipart/form-data" \
+              -F "access_token=$GITEE_TOKEN" \
+              -F "file=@$FILE" \
+              | jq -r '.browser_download_url // "upload failed"'
+          done
+
+          echo "Gitee release sync complete."

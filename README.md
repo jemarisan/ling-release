@@ -54,6 +54,27 @@ All chat history is stored 100% locally on your device. Ling has zero backend se
 - [Privacy Policy](https://ling.deepout.ai/privacy.html)
 - [Terms of Use](https://ling.deepout.ai/terms.html)
 
+## Gitee mirror (China)
+
+For faster access in China, you can run a Gitee mirror of this repo and serve the same download page via Gitee Pages. The page in `docs/` already uses a **Gitee-first** strategy: it requests `https://gitee.com/api/v5/repos/dislab_io/ling-release/releases/latest` first; if that succeeds, download buttons use Gitee asset URLs. If Gitee is unavailable, it falls back to the GitHub API. If your Gitee repo is under a different owner or name, edit the `giteeOwner` and `giteeRepo` variables in `docs/index.html`.
+
+**1. Create and sync the repo on Gitee**
+
+- Create a repo on Gitee named `ling-release` under your namespace (e.g. `jemarisan/ling-release` if you use the same owner).
+- Either use Gitee's "Import from GitHub" once, or set up a GitHub Action that pushes this repo (e.g. on push to `main`) to the Gitee repo using a Gitee token (repo scope). The Action can push the branch that GitHub Pages uses (e.g. `main` or `gh-pages`) to the same branch on Gitee.
+
+**2. Enable Gitee Pages**
+
+- In the Gitee repo: Settings > Gitee Pages > Enable, and set the source to the branch and directory that contains the site (e.g. `docs/` on `main`). Save and deploy.
+
+**3. Sync releases to Gitee**
+
+- Gitee does not auto-sync GitHub Releases. When you publish a new release on GitHub (tag + assets), either:
+  - Manually create a release with the same tag on Gitee and upload the same APK/DMG, or
+  - Use a release script or CI step that, after creating the GitHub release, calls the Gitee API to create a release with the same tag and uploads the same asset files (e.g. `POST /api/v5/repos/:owner/:repo/releases` and asset upload endpoints).
+
+Once the mirror repo and releases are in place, point users in China to your Gitee Pages URL (e.g. `https://your-name.gitee.io/ling-release/`). The page will then use Gitee for both version info and file downloads when available.
+
 ## About
 
 - Source code is maintained in a private repository
