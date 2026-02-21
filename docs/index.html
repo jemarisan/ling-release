@@ -9,7 +9,7 @@
   <title>Ling - AI Life Rehearsal</title>
   <script>
     (function(){
-      var v = '2026022002';
+      var v = '2026022100';
       var k = 'ling_site_v';
       try {
         var old = sessionStorage.getItem(k);
@@ -288,7 +288,7 @@
           <span data-lang="en">Contact</span>
         </a>
       </div>
-      <p class="copy">(c) 2026 JEMARISAN. All rights reserved. <span style="margin-left:8px;opacity:0.5">site v2026.0220.2</span></p>
+      <p class="copy">(c) 2026 JEMARISAN. All rights reserved. <span style="margin-left:8px;opacity:0.5">site v2026.0221.0</span></p>
     </footer>
   </div>
 
@@ -345,16 +345,37 @@
       var githubRepo = 'ling-release';
       var giteeApi = 'https://gitee.com/api/v5/repos/' + giteeOwner + '/' + giteeRepo + '/releases/latest';
       var githubApi = 'https://api.github.com/repos/' + githubOwner + '/' + githubRepo + '/releases/latest';
-      var fallbackHref = 'https://github.com/' + githubOwner + '/' + githubRepo + '/releases/latest';
-      var fallback = function(btn) {
-        if (btn.href === '#' || btn.href === '') btn.href = fallbackHref;
-      };
+      var giteeFallback = 'https://gitee.com/' + giteeOwner + '/' + giteeRepo + '/releases/latest';
+      var githubFallback = 'https://github.com/' + githubOwner + '/' + githubRepo + '/releases/latest';
+
+      function isChina() {
+        try {
+          var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+          if (/^Asia\/(Shanghai|Chongqing|Urumqi|Harbin)$/i.test(tz)) return true;
+        } catch(e) {}
+        var lang = (navigator.language || '').toLowerCase();
+        return lang === 'zh-cn' || lang === 'zh';
+      }
+
+      var cn = isChina();
+      var primaryApi = cn ? giteeApi : githubApi;
+      var secondaryApi = cn ? githubApi : giteeApi;
+      var primaryFallback = cn ? giteeFallback : githubFallback;
+      var primaryHeaders = cn ? {} : { 'Accept': 'application/vnd.github.v3+json' };
+      var secondaryHeaders = cn ? { 'Accept': 'application/vnd.github.v3+json' } : {};
+
+      function setFallback(btn) {
+        if (!btn || (btn.href && btn.href !== '#' && !btn.href.endsWith('/'))) return;
+        btn.href = primaryFallback;
+      }
+
       function applyRelease(data) {
         var tag = data.tag_name || '';
         var assets = data.assets || [];
         var versionEl = document.getElementById('release-version');
         if (tag && versionEl) {
-          versionEl.textContent = (document.documentElement.lang === 'zh-CN' ? '当前版本 ' : 'Current version ') + tag;
+          var prefix = (document.documentElement.lang === 'zh-CN') ? '当前版本 ' : 'Current version ';
+          versionEl.textContent = prefix + tag;
           versionEl.style.display = 'block';
         }
         var androidBtn = document.getElementById('dl-android');
@@ -366,24 +387,26 @@
           if (name.endsWith('-android.apk')) androidBtn.href = url;
           else if (name.endsWith('-macos.dmg')) macosBtn.href = url;
         });
-        fallback(androidBtn);
-        fallback(macosBtn);
+        setFallback(androidBtn);
+        setFallback(macosBtn);
       }
-      function tryGitHub() {
-        fetch(githubApi, { headers: { 'Accept': 'application/vnd.github.v3+json' } })
-          .then(function(r) { return r.json(); })
+
+      function trySecondary() {
+        fetch(secondaryApi, { headers: secondaryHeaders })
+          .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
           .then(applyRelease)
           .catch(function() {
-            var androidBtn = document.getElementById('dl-android');
-            var macosBtn = document.getElementById('dl-macos');
-            if (androidBtn) androidBtn.href = fallbackHref;
-            if (macosBtn) macosBtn.href = fallbackHref;
+            var ab = document.getElementById('dl-android');
+            var mb = document.getElementById('dl-macos');
+            if (ab) ab.href = primaryFallback;
+            if (mb) mb.href = primaryFallback;
           });
       }
-      fetch(giteeApi)
+
+      fetch(primaryApi, { headers: primaryHeaders })
         .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
         .then(applyRelease)
-        .catch(tryGitHub);
+        .catch(trySecondary);
     })();
 
     (function() {
