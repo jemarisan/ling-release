@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "keys": [
+    {
+      "publicKey": "Jq9+VquHiK9dVunMaQz91PtdoO7TSKPrSk0MnLizVX8=",
+      "status": "active",
+      "label": "Developer primary"
+    },
+    {
+      "publicKey": "gHhlB9jIfvXrQ+/+rhfuC2v5C8UN/tYl05dioWJgVVc=",
+      "status": "active",
+      "label": "Developer secondary"
+    }
+  ],
+  "signature": "5ME+1S3kYhGwI0WiLa7GCzctuO+1Z5NQidnXCgdB6iUYcQGh7Y36WG8IJxXZr9tPupbr8meeog1QfGAB8dk2BQ=="
+}
