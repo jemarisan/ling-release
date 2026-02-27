@@ -69,42 +69,44 @@ jobs:
           REPO="ling-release"
           API="https://gitee.com/api/v5"
 
-          # Get release name and body from GitHub
           RELEASE_NAME=$(gh release view "$TAG" --repo "${{ github.repository }}" --json name --jq '.name' 2>/dev/null || echo "$TAG")
-          RELEASE_BODY=$(gh release view "$TAG" --repo "${{ github.repository }}" --json body --jq '.body' 2>/dev/null || echo "")
+          RELEASE_BODY=$(gh release view "$TAG" --repo "${{ github.repository }}" --json body --jq '.body' 2>/dev/null || echo "Release $TAG")
 
-          # Create release on Gitee
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$API/repos/$OWNER/$REPO/releases" \
-            -H "Content-Type: application/json" \
-            -d "$(jq -n \
-              --arg token "$GITEE_TOKEN" \
-              --arg tag "$TAG" \
-              --arg name "$RELEASE_NAME" \
-              --arg body "$RELEASE_BODY" \
-              '{
-                access_token: $token,
-                tag_name: $tag,
-                name: $name,
-                body: $body,
-                target_commitish: "main"
-              }')")
+          # Try to find existing release by listing all and matching tag
+          echo "Looking for existing Gitee release with tag $TAG ..."
+          RELEASE_ID=$(curl -s "$API/repos/$OWNER/$REPO/releases?access_token=$GITEE_TOKEN&page=1&per_page=100" \
+            | jq -r --arg t "$TAG" '.[] | select(.tag_name == $t) | .id // empty' 2>/dev/null || echo "")
 
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "Create release HTTP $HTTP_CODE"
-
-          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
-            RELEASE_ID=$(echo "$BODY" | jq -r '.id')
-            echo "Gitee release created: id=$RELEASE_ID"
-          else
-            echo "Create failed ($HTTP_CODE), looking for existing release..."
-            RELEASE_ID=$(curl -s "$API/repos/$OWNER/$REPO/releases/tags/$TAG?access_token=$GITEE_TOKEN" \
-              | jq -r '.id // empty')
-            if [ -z "$RELEASE_ID" ]; then
-              echo "Could not find or create Gitee release. Skipping asset upload."
-              exit 0
-            fi
+          if [ -n "$RELEASE_ID" ]; then
             echo "Found existing release: id=$RELEASE_ID"
+          else
+            echo "No existing release found, creating..."
+            RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$API/repos/$OWNER/$REPO/releases" \
+              -H "Content-Type: application/json" \
+              -d "$(jq -n \
+                --arg token "$GITEE_TOKEN" \
+                --arg tag "$TAG" \
+                --arg name "$RELEASE_NAME" \
+                --arg body "$RELEASE_BODY" \
+                '{
+                  access_token: $token,
+                  tag_name: $tag,
+                  name: $name,
+                  body: $body
+                }')")
+
+            HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+            RESP_BODY=$(echo "$RESPONSE" | sed '$d')
+            echo "Create release HTTP $HTTP_CODE"
+            echo "Response: $RESP_BODY"
+
+            if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+              RELEASE_ID=$(echo "$RESP_BODY" | jq -r '.id')
+              echo "Gitee release created: id=$RELEASE_ID"
+            else
+              echo "ERROR: Could not create Gitee release. Exiting."
+              exit 1
+            fi
           fi
 
           # Upload each asset
@@ -112,12 +114,15 @@ jobs:
             [ -f "$FILE" ] || continue
             FNAME=$(basename "$FILE")
             echo "Uploading $FNAME ..."
-            curl -s -X POST \
+            UPLOAD_RESP=$(curl -s -w "\n%{http_code}" -X POST \
               "$API/repos/$OWNER/$REPO/releases/$RELEASE_ID/attach_files" \
               -H "Content-Type: multipart/form-data" \
               -F "access_token=$GITEE_TOKEN" \
-              -F "file=@$FILE" \
-              | jq -r '.browser_download_url // "upload failed"'
+              -F "file=@$FILE")
+            UPLOAD_CODE=$(echo "$UPLOAD_RESP" | tail -1)
+            UPLOAD_BODY=$(echo "$UPLOAD_RESP" | sed '$d')
+            DOWNLOAD_URL=$(echo "$UPLOAD_BODY" | jq -r '.browser_download_url // "upload failed"')
+            echo "  -> HTTP $UPLOAD_CODE: $DOWNLOAD_URL"
           done
 
           echo "Gitee release sync complete."
