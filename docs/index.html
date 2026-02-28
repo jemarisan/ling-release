@@ -387,44 +387,54 @@
         btn.href = primaryFallback;
       }
 
-      function applyRelease(data) {
-        var tag = data.tag_name || '';
-        var assets = data.assets || [];
+      var androidBtn = document.getElementById('dl-android');
+      var macosBtn = document.getElementById('dl-macos');
+
+      function applyAssets(assets) {
+        var found = false;
+        (assets || []).forEach(function(a) {
+          var name = (a.name || '').toLowerCase();
+          var url = a.browser_download_url;
+          if (!url) return;
+          if (name.endsWith('-android.apk') || name.indexOf('android') >= 0 && name.endsWith('.apk')) {
+            androidBtn.href = url; found = true;
+          } else if (name.endsWith('-macos.dmg') || name.indexOf('macos') >= 0 && name.endsWith('.dmg')) {
+            macosBtn.href = url; found = true;
+          }
+        });
+        return found;
+      }
+
+      function applyVersion(tag) {
         var versionEl = document.getElementById('release-version');
         if (tag && versionEl) {
           var prefix = (document.documentElement.lang === 'zh-CN') ? '当前版本 ' : 'Current version ';
           versionEl.textContent = prefix + tag;
           versionEl.style.display = 'block';
         }
-        var androidBtn = document.getElementById('dl-android');
-        var macosBtn = document.getElementById('dl-macos');
-        assets.forEach(function(a) {
-          var name = (a.name || '').toLowerCase();
-          var url = a.browser_download_url;
-          if (!url) return;
-          if (name.endsWith('-android.apk')) androidBtn.href = url;
-          else if (name.endsWith('-macos.dmg')) macosBtn.href = url;
-        });
-        setFallback(androidBtn);
-        setFallback(macosBtn);
       }
 
-      function trySecondary() {
-        fetch(secondaryApi, { headers: secondaryHeaders })
+      function tryGitHub() {
+        return fetch(githubApi, { headers: { 'Accept': 'application/vnd.github.v3+json' } })
           .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
-          .then(applyRelease)
-          .catch(function() {
-            var ab = document.getElementById('dl-android');
-            var mb = document.getElementById('dl-macos');
-            if (ab) ab.href = primaryFallback;
-            if (mb) mb.href = primaryFallback;
+          .then(function(data) {
+            applyVersion(data.tag_name);
+            applyAssets(data.assets);
           });
       }
 
       fetch(primaryApi, { headers: primaryHeaders })
         .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
-        .then(applyRelease)
-        .catch(trySecondary);
+        .then(function(data) {
+          applyVersion(data.tag_name);
+          var hasFiles = applyAssets(data.assets);
+          if (!hasFiles) return tryGitHub();
+        })
+        .catch(function() { return tryGitHub(); })
+        .catch(function() {
+          setFallback(androidBtn);
+          setFallback(macosBtn);
+        });
     })();
 
     (function() {
