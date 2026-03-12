@@ -9,7 +9,7 @@
   <title>Ling - AI Life Rehearsal</title>
   <script>
     (function(){
-      var v = '2026030201';
+      var v = '2026031301';
       var k = 'ling_site_v';
       try {
         var old = sessionStorage.getItem(k);
@@ -209,7 +209,7 @@
         </div>
         <span class="badge">App Store</span>
       </a>
-      <a class="dl-btn" id="dl-android" href="https://github.com/jemarisan/ling-release/releases/latest" data-fallback="https://github.com/jemarisan/ling-release/releases/latest">
+      <a class="dl-btn" id="dl-android" href="https://gitee.com/dislab_io/ling-release/releases/latest">
         <div class="icon">
           <svg viewBox="0 0 24 24"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24a11.463 11.463 0 00-8.94 0L5.65 5.67c-.19-.29-.58-.38-.87-.2-.28.18-.37.54-.22.83L6.4 9.48A10.78 10.78 0 002 18h20a10.78 10.78 0 00-4.4-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>
         </div>
@@ -219,7 +219,7 @@
         </div>
         <span class="badge">APK</span>
       </a>
-      <a class="dl-btn" id="dl-macos" href="https://github.com/jemarisan/ling-release/releases/latest" data-fallback="https://github.com/jemarisan/ling-release/releases/latest">
+      <a class="dl-btn" id="dl-macos" href="https://gitee.com/dislab_io/ling-release/releases/latest">
         <div class="icon">
           <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         </div>
@@ -306,7 +306,7 @@
           <span data-lang="en">Contact</span>
         </a>
       </div>
-      <p class="copy">(c) 2026 JEMARISAN. All rights reserved. <span style="margin-left:8px;opacity:0.5">site v2026.0302.1</span></p>
+      <p class="copy">(c) 2026 JEMARISAN. All rights reserved. <span style="margin-left:8px;opacity:0.5">site v2026.0313.1</span></p>
     </footer>
   </div>
 
@@ -357,83 +357,30 @@
     })();
 
     (function() {
-      var giteeOwner = 'dislab_io';
-      var giteeRepo = 'ling-release';
-      var githubOwner = 'jemarisan';
-      var githubRepo = 'ling-release';
-      var giteeApi = 'https://gitee.com/api/v5/repos/' + giteeOwner + '/' + giteeRepo + '/releases/latest';
-      var githubApi = 'https://api.github.com/repos/' + githubOwner + '/' + githubRepo + '/releases/latest';
-      var giteeFallback = 'https://gitee.com/' + giteeOwner + '/' + giteeRepo + '/releases/latest';
-      var githubFallback = 'https://github.com/' + githubOwner + '/' + githubRepo + '/releases/latest';
-
-      function isChina() {
-        try {
-          var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-          if (/^Asia\/(Shanghai|Chongqing|Urumqi|Harbin)$/i.test(tz)) return true;
-        } catch(e) {}
-        var lang = (navigator.language || '').toLowerCase();
-        return lang === 'zh-cn' || lang === 'zh';
-      }
-
-      var cn = isChina();
-      var primaryApi = cn ? giteeApi : githubApi;
-      var secondaryApi = cn ? githubApi : giteeApi;
-      var primaryFallback = cn ? giteeFallback : githubFallback;
-      var primaryHeaders = cn ? {} : { 'Accept': 'application/vnd.github.v3+json' };
-      var secondaryHeaders = cn ? { 'Accept': 'application/vnd.github.v3+json' } : {};
-
-      function setFallback(btn) {
-        if (!btn || (btn.href && btn.href !== '#' && !btn.href.endsWith('/'))) return;
-        btn.href = primaryFallback;
-      }
-
+      var api = 'https://gitee.com/api/v5/repos/dislab_io/ling-release/releases/latest';
+      var fallback = 'https://gitee.com/dislab_io/ling-release/releases/latest';
       var androidBtn = document.getElementById('dl-android');
       var macosBtn = document.getElementById('dl-macos');
 
-      function applyAssets(assets) {
-        var found = false;
-        (assets || []).forEach(function(a) {
-          var name = (a.name || '').toLowerCase();
-          var url = a.browser_download_url;
-          if (!url) return;
-          if (name.endsWith('-android.apk') || name.indexOf('android') >= 0 && name.endsWith('.apk')) {
-            androidBtn.href = url; found = true;
-          } else if (name.endsWith('-macos.dmg') || name.indexOf('macos') >= 0 && name.endsWith('.dmg')) {
-            macosBtn.href = url; found = true;
-          }
-        });
-        return found;
-      }
-
-      function applyVersion(tag) {
-        var versionEl = document.getElementById('release-version');
-        if (tag && versionEl) {
-          var prefix = (document.documentElement.lang === 'zh-CN') ? '当前版本 ' : 'Current version ';
-          versionEl.textContent = prefix + tag;
-          versionEl.style.display = 'block';
-        }
-      }
-
-      function tryGitHub() {
-        return fetch(githubApi, { headers: { 'Accept': 'application/vnd.github.v3+json' } })
-          .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
-          .then(function(data) {
-            applyVersion(data.tag_name);
-            applyAssets(data.assets);
-          });
-      }
-
-      fetch(primaryApi, { headers: primaryHeaders })
+      fetch(api)
         .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
         .then(function(data) {
-          applyVersion(data.tag_name);
-          var hasFiles = applyAssets(data.assets);
-          if (!hasFiles) return tryGitHub();
+          var versionEl = document.getElementById('release-version');
+          if (data.tag_name && versionEl) {
+            versionEl.textContent = data.tag_name;
+            versionEl.style.display = 'block';
+          }
+          (data.assets || []).forEach(function(a) {
+            var name = (a.name || '').toLowerCase();
+            var url = a.browser_download_url;
+            if (!url || url.indexOf('/archive/') >= 0) return;
+            if (name.endsWith('.apk')) androidBtn.href = url;
+            else if (name.endsWith('.dmg')) macosBtn.href = url;
+          });
         })
-        .catch(function() { return tryGitHub(); })
         .catch(function() {
-          setFallback(androidBtn);
-          setFallback(macosBtn);
+          androidBtn.href = fallback;
+          macosBtn.href = fallback;
         });
     })();
 
